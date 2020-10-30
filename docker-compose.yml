@@ -1,0 +1,9 @@
+version: '3'
+services:
+  bisecur2mqtt:
+    container_name: bisecur2mqtt
+    network_mode: host
+    build: ""
+    restart: unless-stopped
+    env_file:
+      - .env
