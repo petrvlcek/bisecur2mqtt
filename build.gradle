@@ -26,6 +26,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-parameter-names:2.9.8'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.+'
     implementation "org.jetbrains.kotlinx:kotlinx-io-jvm:$kotlinx_io_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
     implementation 'org.koin:koin-core:2.0.1'
     implementation 'org.koin:koin-logger-slf4j:2.0.1'
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'

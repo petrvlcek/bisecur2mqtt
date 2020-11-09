@@ -1,11 +1,14 @@
 package com.github.petrvlcek.bisecur2mqtt
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import mu.KotlinLogging
 import org.koin.core.inject
 
 class GroupCommandListener : MessageListener() {
     private val logger = KotlinLogging.logger {}
     private val gateway: BisecurGateway by inject()
+    private val objectMapper: ObjectMapper by inject()
+
     private val actionPattern = """\/{0,1}bisecur\/group\/([\w\s]+)\/([\w]+)""".toRegex()
 
     override fun handleMessage(topic: String?, payload: ByteArray?) {
@@ -15,7 +18,7 @@ class GroupCommandListener : MessageListener() {
             logger.info { "received action command, group name: ${groupName}, action: ${action}" }
             when (action) {
                 "set" -> handleSet(groupName)
-                "transition" -> handleTransition(groupName)
+                "get" -> handleGet(groupName)
                 else -> {
                     logger.warn { "Action ${action} not recognized." }
                 }
@@ -27,8 +30,9 @@ class GroupCommandListener : MessageListener() {
         gateway.setState(groupName)
     }
 
-    private fun handleTransition(groupName: String) {
-        gateway.getTransition(groupName)
+    private fun handleGet(groupName: String) {
+        val state = gateway.getState(groupName)
+        publish("bisecur/group/${groupName}/state", objectMapper.writeValueAsBytes(state))
     }
 
 }

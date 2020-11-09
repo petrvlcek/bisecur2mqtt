@@ -3,6 +3,7 @@ package com.github.petrvlcek.bisecur2mqtt
 import mu.KotlinLogging
 import org.bisdk.sdk.ClientAPI
 import org.bisdk.sdk.GatewayConnection
+import org.bisdk.sdk.Group
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.dsl.module
@@ -16,10 +17,19 @@ val gatewayModule = module {
     }
 }
 
+data class State(
+    val groupName: String,
+    val isOpen: Boolean,
+    val stateInPercent: Int,
+    val isError: Boolean = false,
+    val autoClose: Boolean = false
+)
+
 class BisecurGateway : KoinComponent {
     private val config: Config by inject()
     private val logger = KotlinLogging.logger {}
     lateinit private var clientAPI: ClientAPI
+    lateinit private var userGroups: List<Group>
 
     fun connect() {
         //        val discovery = Discovery()
@@ -31,32 +41,34 @@ class BisecurGateway : KoinComponent {
         val client =
             GatewayConnection(InetAddress.getByName(config.gatewayAddress), config.gatewaySenderId, config.gatewayId)
         clientAPI = ClientAPI(client)
-        logger.info("BiSecur Gateway, name=${clientAPI.getName()}, ping=${clientAPI.ping()}")
+        logger.info("BiSecur Gateway, action=gateway_ping, name=${clientAPI.getName()}, ping=${clientAPI.ping()}")
         clientAPI.login(config.gatewayUsername, config.gatewayPassword)
+        logger.debug("Getting groups for current user, action=get_user_groups, username=${config.gatewayUsername}")
+        userGroups = clientAPI.getGroupsForUser()
+            .let {
+                logger.info { "Groups for current user: action=get_user_groups, username=${config.gatewayUsername}, groups=${it}" }
+                it
+            }
     }
 
     fun setState(groupName: String) {
-        clientAPI.getGroupsForUser()
-            .let {
-                logger.debug { "Groups: ${it}" }
-                it
-            }
-            .find { group -> group.name.equals(groupName, true) }
+        userGroups.find { group -> group.name.equals(groupName, true) }
             ?.let {
                 clientAPI.setState(it.ports[0])
             }
-
     }
 
-    fun getTransition(groupName: String) {
-        clientAPI.getGroupsForUser()
-            .let {
-                logger.debug { "Groups: ${it}" }
-                it
-            }
-            .find { group -> group.name.equals(groupName, true) }
+    fun getState(groupName: String): State? {
+        return userGroups.find { group -> group.name.equals(groupName, true) }
             ?.let {
-                clientAPI.getTransition(it.ports[0])
+                val transition = clientAPI.getTransition(it.ports[0])
+                State(
+                    groupName,
+                    transition.hcp.positionOpen,
+                    transition.stateInPercent,
+                    transition.error,
+                    transition.autoClose
+                )
             }
     }
 }
