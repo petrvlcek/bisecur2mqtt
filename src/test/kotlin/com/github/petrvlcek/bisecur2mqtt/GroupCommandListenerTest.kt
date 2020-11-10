@@ -59,7 +59,7 @@ internal class GroupCommandListenerTest : KoinTest {
         val message = MqttMessage()
 
         runBlocking {
-            messageListener.messageArrived("bisecur/group/somegroup/set", message)
+            messageListener.messageArrived("bisecur2mqtt/group/somegroup/set", message)
         }
 
         coVerify {
@@ -70,19 +70,19 @@ internal class GroupCommandListenerTest : KoinTest {
     @Test
     fun handlGetAction() {
         every { gateway.getState(eq("somegroup")) } answers { State("somegroup", false, 0) }
-        every { mqttClient.publish(eq("bisecur/group/somegroup/state"), any(), eq(0), eq(false)) } just Runs
+        every { mqttClient.publish(eq("bisecur2mqtt/group/somegroup/state"), any(), eq(0), eq(false)) } just Runs
 
         val messageListener = GroupCommandListener()
         val message = MqttMessage()
 
         runBlocking {
-            messageListener.messageArrived("bisecur/group/somegroup/get", message)
+            messageListener.messageArrived("bisecur2mqtt/group/somegroup/get", message)
         }
 
         val expectedPayload = objectMapper.writeValueAsBytes(State("somegroup", false, 0))
         coVerify {
             gateway.getState("somegroup")
-            mqttClient.publish("bisecur/group/somegroup/state", expectedPayload, 0, false)
+            mqttClient.publish("bisecur2mqtt/group/somegroup/state", expectedPayload, 0, false)
         }
     }
 
@@ -94,7 +94,7 @@ internal class GroupCommandListenerTest : KoinTest {
         val message = MqttMessage()
 
         runBlocking {
-            messageListener.messageArrived("bisecur/group/somegroup/unknown", message)
+            messageListener.messageArrived("bisecur2mqtt/group/somegroup/unknown", message)
         }
 
         coVerify {

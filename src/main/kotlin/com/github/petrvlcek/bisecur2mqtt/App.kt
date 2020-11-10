@@ -26,6 +26,6 @@ class App : KoinComponent {
     private val mqttClient: MqttClient by inject()
 
     fun start() {
-        mqttClient.subscribe("bisecur/group/#", GroupCommandListener())
+        mqttClient.subscribe("bisecur2mqtt/group/#", GroupCommandListener())
     }
 }
