@@ -2,8 +2,7 @@ version: '3'
 services:
   bisecur2mqtt:
     container_name: bisecur2mqtt
-    network_mode: host
-    build: ""
+    image: petrvlcek/bisecur2mqtt:latest
     restart: unless-stopped
     env_file:
       - .env
