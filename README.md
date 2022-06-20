@@ -2,6 +2,10 @@
 
 MQTT bridge for BiSecur Gateway
 
+[![Docker Hub](https://img.shields.io/badge/%20-DockerHub-blue?logo=docker&style=plastic)](https://hub.docker.com/r/petrvlcek/bisecur2mqtt)
+![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/petrvlcek/bisecur2mqtt?sort=date&style=plastic)
+
+
 ## Usage
 
 ### Docker Compose
