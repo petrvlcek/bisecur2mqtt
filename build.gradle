@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
@@ -32,14 +32,14 @@ dependencies {
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
     implementation 'io.github.microutils:kotlin-logging:1.6.26'
 
-    runtime 'ch.qos.logback:logback-classic:1.2.3'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 
-    testImplementation 'io.mockk:mockk:1.10.+'
+    testImplementation 'io.mockk:mockk:1.12.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.0'
     testImplementation 'org.koin:koin-test:2.0.1'
     testImplementation 'org.assertj:assertj-core:3.12.1'
-    testRuntime 'org.junit.platform:junit-platform-launcher:1.5.0'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.5.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.0'
 }
 
 jar {
