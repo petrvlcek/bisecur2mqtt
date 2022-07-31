@@ -29,7 +29,7 @@ class EnvConfig : Config {
 
     override val mqttServerUri by lazy { getRequiredEnv("MQTT_SERVER_URI") }
     override val mqttClientId by lazy { getRequiredEnv("MQTT_CLIENT_ID") }
-    override val mqttUsername by lazy { getRequiredEnv("MQTT_PASSWORD") }
+    override val mqttUsername by lazy { getRequiredEnv("MQTT_USERNAME") }
     override val mqttPassword by lazy { getRequiredEnv("MQTT_PASSWORD") }
 
     private val logger = KotlinLogging.logger {}
