@@ -87,3 +87,7 @@ This is an excerpt of a schema of a payload that can be consumed from the `bisec
 
 > ℹ️ Work on this repository is in progress. Please head
 > to [Discussions](https://github.com/petrvlcek/bisecur2mqtt/discussions) if you have any questions.
+
+## Credits
+
+This project is based on great library [bisdk/sdk](https://github.com/bisdk/sdk).
