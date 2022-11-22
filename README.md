@@ -80,7 +80,7 @@ This is an excerpt of a schema of a payload that can be consumed from the `bisec
    ```
 2. Build and push Docker images
    ```
-   docker buildx build --push --tag petrvlcek/bisecur2mqtt:latest --platform linux/arm/v7,linux/arm64/v8 .
+   docker buildx build --push --tag petrvlcek/bisecur2mqtt:latest --platform linux/arm/v7,linux/arm64/v8,linux/amd64 .
    ```
 
 ## Other resources
